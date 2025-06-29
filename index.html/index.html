@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Birthday Surprise</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #fbc2eb, #a6c1ee);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      max-width: 600px;
+      overflow-y: auto;
+      max-height: 90vh;
+    }
+
+    h1 {
+      color: #d63384;
+    }
+
+    button {
+      background: #e83e8c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+
+    #letter {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      background: #fff0f6;
+      padding: 1.5rem;
+      border-radius: 12px;
+      color: #333;
+      max-height: 300px;
+      overflow-y: auto;
+      animation: slideDown 1s ease forwards;
+      white-space: pre-line;
+      font-size: 1.1rem;
+      line-height: 1.5;
+    }
+
+    #photos, #placezone div {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    #photos img, #placezone img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    #photos img:hover, #placezone img:hover {
+      transform: scale(1.1);
+    }
+
+    #placezone {
+      display: none;
+      margin-top: 30px;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-100px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<div class="container">
+  <h1>🎉 Happy Birthday,my pretty bestfriend🎈</h1>
+  <p>click here my girl</p>
+  <button onclick="showLetter()">click🎁</button>
+
+  <div id="letter">
+Dear Cheata,
+
+Happy birthday! 🎉
+I'm so happy to see you growing up from year to year and Today, I just want to say thank you… for being my best friend, my favorite sister, and my biggest support through everything.
+
+Even though we're in different classes now and don’t get to eat at the canteen together anymore like before… I still remember every laugh, every silly joke, every moment we shared.
+
+To be honest, I miss those days so much. I sometimes feel sad… not because you’ve made new friends, but because I’m scared.  
+Scared that one day someone might replace me.  
+But deep down, I know that real friendship can never be replaced.
+
+You’ve always been there for me — when I felt lost, when I was stressed about school, and especially during my semifinal public speaking competition… you were the one who made me believe in myself.  
+And that means more than words can ever say.
+
+So, on your birthday, I just want to tell you this:  
+You are strong, smart, beautiful — inside and out.  
+I wish you endless happiness, good health, and a life full of success and smiles.  
+I hope you chase your dreams bravely and meet kind people along the way.
+
+Even if things change, even if we don’t talk every day,  
+you’ll always be my best friend, my soul sister, my favorite person.  
+I’ll always cheer for you from the bottom of my heart.
+
+With love,  
+Your best friend always,  
+Rithisak 💖
+  </div>
+
+  <div id="photos" style="display:none;">
+    <img src="../img/ops.jpg" alt="Happy moment 1" />
+    <img src="../img/a.jpg" alt="Happy moment 2" />
+    <img src="../img/b.jpg" alt="Happy moment 3" />
+    <img src="../img/c.jpg" alt="City night lights" />
+    <img src="../img/d.jpg" alt="Mountain view" />
+    <img src="../img/e.jpg" alt="Beautiful beach" />
+  </div>
+
+ 
+
+<script>
+  function showLetter() {
+    document.getElementById("letter").style.display = "block";
+    document.getElementById("photos").style.display = "flex";
+    document.getElementById("placezone").style.display = "block";
+  }
+
+  // Confetti Effect
+  const canvas = document.getElementById("confetti-canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const confettiCount = 300;
+  const confetti = [];
+
+  function randomColor() {
+    const colors = ["#e91e63", "#ff9800", "#4caf50", "#2196f3", "#9c27b0"];
+    return colors[Math.floor(Math.random() * colors.length)];
+  }
+
+  for (let i = 0; i < confettiCount; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 6 + 2,
+      d: Math.random() * confettiCount,
+      color: randomColor(),
+      tilt: Math.floor(Math.random() * 10) - 10,
+      tiltAngle: 0,
+      tiltAngleIncrement: (Math.random() * 0.07) + 0.05
+    });
+  }
+
+  function drawConfetti() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    confetti.forEach(c => {
+      ctx.beginPath();
+      ctx.lineWidth = c.r;
+      ctx.strokeStyle = c.color;
+      ctx.moveTo(c.x + c.tilt + c.r / 2, c.y);
+      ctx.lineTo(c.x + c.tilt, c.y + c.tilt + c.r / 2);
+      ctx.stroke();
+    });
+    updateConfetti();
+  }
+
+  function updateConfetti() {
+    confetti.forEach(c => {
+      c.tiltAngle += c.tiltAngleIncrement;
+      c.y += (Math.cos(c.d) + 3 + c.r / 2) / 2;
+      c.x += Math.sin(c.d);
+      c.tilt = Math.sin(c.tiltAngle - (Math.PI / 2)) * 15;
+
+      if (c.y > canvas.height) {
+        c.y = -10;
+        c.x = Math.random() * canvas.width;
+      }
+    });
+  }
+
+  setInterval(drawConfetti, 33);
+</script>
+
+</body>
+</html>
+
+
+
+
